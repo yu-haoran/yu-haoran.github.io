@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Haoran Yu's Homepage</title>
+
+  <!-- Google Analytics (kept from original template) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141256821-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-141256821-1');
+  </script>
+
+  <!-- Bootstrap CSS (only CSS, JS not required for this page) -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+
+  <style>
+    /* Basic page layout */
+    body{
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin: 20px;
+      background: #f5f6f8;
+      color: #222;
+    }
+
+    /* Table layout for left menu + content (kept similar to original) */
+    #tlayout{ width:100%; border-collapse: collapse; }
+    #layout-menu{
+      width:220px;
+      vertical-align: top;
+      padding-right: 18px;
+    }
+    #layout-content{
+      vertical-align: top;
+      padding-left: 12px;
+      max-width: 1000px;
+    }
+
+    .menu-category{ font-weight: 700; margin-bottom: 8px; }
+    .menu-item{ margin: 6px 0; }
+    .menu-item a{ color: #0645ad; text-decoration: none; }
+    .menu-item a.current{ font-weight: bold; }
+
+    /* Footer */
+    #footer{ margin-top: 26px; color: #666; font-size: 13px; }
+
+    /* --- Photo wall styles (Masonry via CSS columns) --- */
+
+    :root{
+      --gap: 16px;
+      --card-radius: 8px;
+      --card-padding: 6px;
+      --border-width: 2px;
+    }
+
+    h2 { margin-bottom: 12px; font-size: 20px; }
+
+    /* Use CSS columns to create a masonry flow */
+    .photo-wall{
+      column-count: 4;             /* default 3 columns */
+      column-gap: var(--gap);
+      /* remove default margin/padding */
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    /* Prevent cards from being broken between columns */
+    .photo-card{
+      display: inline-block;      /* required for column layout */
+      width: 100%;
+      margin: 0 0 var(--gap);
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+      -moz-column-break-inside: avoid;
+
+      background: #fff;
+      border-radius: var(--card-radius);
+      padding: var(--card-padding);
+      box-sizing: border-box;
+
+      /* per-card colored thin border, set via --border */
+      border: var(--border-width) solid var(--border, #ddd);
+      box-shadow: 0 4px 12px rgba(18,20,24,0.04);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    /* hover uplift effect */
+    .photo-card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(18,20,24,0.08);
+    }
+
+    .photo-card img{
+      display: block;
+      width: 100%;
+      height: auto;      /* preserve aspect ratio (will produce masonry heights) */
+      border-radius: calc(var(--card-radius) - var(--card-padding));
+      object-fit: cover;
+      user-select: none;
+      vertical-align: middle;
+    }
+
+    figcaption{
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.3;
+      color: #333;
+    }
+
+    .caption-badge{
+      display: inline-block;
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.04);
+      font-size: 13px;
+    }
+
+    /* Responsive column counts */
+    @media (max-width: 900px){
+      .photo-wall { column-count: 2; }
+    }
+    @media (max-width: 560px){
+      .photo-wall { column-count: 1; }
+    }
+
+    /* Lightbox styles (simple, no dependency) */
+    .lightbox{
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.75);
+      z-index: 9999;
+      padding: 20px;
+    }
+    .lightbox.open { display:flex; }
+    .lightbox .box{
+      max-width: 1100px;
+      max-height: 90vh;
+      width: 100%;
+      text-align: center;
+    }
+    .lightbox img{
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 8px;
+    }
+    .lightbox .caption{
+      margin-top: 10px;
+      color: #fff;
+      font-size: 15px;
+    }
+    .lightbox .close{
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <table summary="Table for page layout." id="tlayout">
+  <tbody>
+    <tr valign="top">
+      <td id="layout-menu">
+        <div class="menu-category">Haoran Yu</div>
+        <div class="menu-item"><a href="index.html" class="current">Home</a></div>
+        <div class="menu-item"><a href="Publications.html">Publications</a></div>
+        <div class="menu-item"><a href="Articles.html">Articles/Videos (Chinese)</a></div>
+        <div class="menu-item"><a href="Teaching.html">Teaching (Chinese)</a></div>
+        <div class="menu-item"><a href="Resources.html">Resources (Chinese)</a></div>
+        <div class="menu-item"><a href="Group.html">Our Group</a></div>
+      </td>
+
+      <td id="layout-content">
+        <h2><b>Photo Wall</b></h2>
+
+        <!-- Photo wall section -->
+        <section class="photo-wall" id="photoWall">
+          <!-- Each figure is a card. Per-card border color via --border. Caption text below the image. -->
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2021T1.jpg" alt="gfig1" loading="lazy">
+            <figcaption><span class="caption-badge">Teachers' Day (2021)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2022T1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Teachers' Day (2022)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2023A1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Group Gathering (2023)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2023P1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Lvye's Trip to IJCAI in Macao (2023)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2023P2.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Haoran's Talk at UCAS (2023)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2024S1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Group Gathering (2024a)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2024F1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Yujia's Farewell Lunch (2024)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2024P1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Haoran's Talk at SUFE (2024)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2024A1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Group Gathering (2024b)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2024S2.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Graduation Season (2024)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2024T1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Teachers' Day (2024)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2024V1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Lvye's One-Year Visit to ICL (2024)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2025S1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Group Gathering (2025)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2025D1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Lvye's Thesis Defense (2025)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2025D2.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Gongtao's Thesis Defense (2025)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2025F1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Gongtao's Farewell Dinner (2025)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2025P1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Haoran's Talk at JLU (2025)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2026P1.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Xingyu's Trip to AAAI in Singapore (2026)</span></figcaption>
+          </figure>
+
+          <figure class="photo-card" style="--border:#ec6b6b">
+            <img src="./HaoranYu_home/photos/CGemini_2026P2.jpg" alt="gfig2" loading="lazy">
+            <figcaption><span class="caption-badge">Xiaohan's Trip to AAAI in Singapore (2026)</span></figcaption>
+          </figure>
+
+          <!-- Add more figures as needed; replace src with your own image paths and edit captions -->
+        </section>
+
+        <!-- Footer -->
+        <div id="footer">
+          <div id="footer-text">Copyright (c) 2016 Haoran Yu. All rights reserved.</div>
+        </div>
+
+      </td>
+    </tr>
+  </tbody>
+  </table>
+
+  <!-- Simple lightbox markup (hidden by default) -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
+    <div class="close" id="lbClose" title="Close">✕</div>
+    <div class="box">
+      <img id="lbImg" src="" alt="">
+      <div class="caption" id="lbCaption"></div>
+    </div>
+  </div>
+
+  <script>
+    /* Simple lightbox: clicking an image opens the overlay and shows the caption.
+       No external dependency. */
+    (function(){
+      const lightbox = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lbImg');
+      const lbCaption = document.getElementById('lbCaption');
+      const lbClose = document.getElementById('lbClose');
+
+      // Attach click handler to each image in the wall.
+      document.querySelectorAll('.photo-card img').forEach(img=>{
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', (e)=>{
+          // Use the clicked image source for the lightbox.
+          lbImg.src = img.src.replace(/(\?.*)$/,'') || img.src;
+          lbImg.alt = img.alt || '';
+          // Extract the closest figcaption text for the caption.
+          const fig = img.closest('figure');
+          const cap = fig ? (fig.querySelector('figcaption')?.innerText || '') : '';
+          lbCaption.textContent = cap;
+          lightbox.classList.add('open');
+          lightbox.setAttribute('aria-hidden','false');
+        });
+      });
+
+      // Close the lightbox via close button, overlay click, or ESC key.
+      function closeLB(){
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden','true');
+        lbImg.src = '';
+        lbCaption.textContent = '';
+      }
+      lbClose.addEventListener('click', closeLB);
+      lightbox.addEventListener('click', (e)=>{
+        if(e.target === lightbox) closeLB();
+      });
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape') closeLB();
+      });
+    })();
+  </script>
+
+</body>
+</html>
